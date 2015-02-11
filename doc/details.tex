@@ -1,7 +1,7 @@
-\documentclass{article}[12pt]
+\documentclass{article}[10pt]
 \input{preamble}
 \usepackage{graphicx}
-\newcommand{\thetalctrue}{\theta^{lc-\rm{true}}}
+\newcommand{\thetalctrue}{\theta^{SN_{\rm{true}}}}
 \begin{document}
 \section{Objectives}
 The objectives for this document are to
@@ -52,62 +52,67 @@ The SALT2 model has two parts:
     which is related mostly to $x_0,$ since the contribution from terms 
     involving $c$ and $x_1$ to this quantity is constrained to be exactly $0$
     in defining the SALT2 model at $p=0$ at the central wavelength of the 
-    BessellB band. In this very good approximation, $m_B^{\star} = -2.5 \log_{10}{(x_0)} -2.5 \log_{10}{(F_0)},$ where $F_0$ is a constant which can be evaluated for the SALT2 model. Thus, we will treat $x_0$ and $m_B^{\star}$ as equivalent quantities. 
+    BessellB band. In this very good approximation, $m_B^{\star} = -2.5 \log_{10}{(x_0)} -2.5 \log_{10}{(F_0)},$ where $F_0$ is a constant which can be evaluated for the SALT2 model. Thus, we will treat $x_0$ and $m_B^{\star}$ as equivalent quantities. Further, abusing our notation, we will redefine:
+    \be
+    m_b^{\star} = - 2.5 \log_{10}{(x_0)} , \qquad M \rightarrow M + 2.5\log_{10}{(F_0)}
+    \ee
 \end{itemize}
-An additional ingredient, we will be using is the interpretation of intrinsic
+As an additional ingredient, we will be using is the interpretation of intrinsic
 dispersion:
 \begin{itemize}
  
     \item It is well known that standardization in the above manner is not complete, and the distance moduli derived using the above equations have residual scatter. There is some evidence that this scatter is different in different bands, and therefore cannot be completely modelled by a scatter in $M$ above, but we shall ignore this for now and model this by assuming that 
-        \be M \sim N(0, \sigma_{int}) \ee  
-     where $\sigma_{int}$ is the intrinsic dispersion which we will infer from 
-     the study.
+        \be M \sim \mathcal{N}(M_0, \sigma_{int}) \ee  
+where $\sigma_{int}$ is the intrinsic dispersion which we will infer from 
+the study.
+Thus, the true properties of a particular supernova is completely specified by the set of parameters $\thetalctrue = \{x_0/m_B^{\star}, x_1, c, t_0\}$
 \end{itemize}
 Combining these, we can obtain the probability distributions
-$ P(m_B^{\star}\vert \Omega, M)$ or equivalently $P(x_0 \vert \Omega, M)$
+$ P(m_B^{\star}\vert \Omega, M_0, z, x_1, c)$ or equivalently $P(x_0 \vert \Omega, M_0, \sigma_{int}, x_1, c, z)$:
+\be
+P(m_B^{\star} \vert \Omega, M_0, z, x_1, c, \sigma_{int} ) = \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma_{int}^2) 
+\ee
+While, we are assuming that 
+\be
+P(x_1 , c \vert \Omega, M_0, z, \sigma_{int}) = P(x_1, c) = P(x_1) P(c) 
+\ee
+which we may relax in other models. In this model,  we have
+\beqn
+P(\thetalctrue \vert \Omega, \alpha, \beta, z, M_0, \sigma_{int}) &\equiv& \int d\sigma_{int} P(m_B^{\star}, x_1, c, t_0, \sigma_{int} \vert \Omega, z, \alpha, \beta)\\
+&=& \int d \sigma_{int}P(m_B^{\star} \vert x_1, c, t_0, \sigma_{int}, \Omega, z, \alpha, \beta)
+P(x_1, c, t_0, \sigma_{int} \vert \Omega, z, \alpha, \beta) \nonumber\\
+&=& \int d\sigma_{int} \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma^{int}) P(t_0 \vert z, \Omega) P(x_1) P(c)\nonumber  
+\eeqn
 
+%mega) \\ &\times& P({x_1}_i) P(c_i) \int d\sigma_{int}
 \subsection{Posterior Samples of the Cosmology}
 The quantity we are interested in is the posterior distribution of the cosmological parameters $\Omega$ (where we will use $\Omega$ to denote the set of
 cosmological parameters, given the set of measurements $f_{i, j}$ , $\sigma_{i,j}$ which is 
 \be
 P(\Omega \vert \{f_{i,j}, \sigma_{i,j}, z_i,  \}) = 
-        \int d\alpha d\beta P(\Omega, \alpha, \beta \vert \{f_{i,j}, \sigma_{i,j}, z_i\})
+        \int d\alpha d\beta d\sigma_{int}d M_0 P(\Omega, \alpha, \beta, M_0, \sigma_{int} \vert \{f_{i,j}, \sigma_{i,j}, z_i\})
 \ee
-
 To get this quantity, we use:
+\be
+P(\Omega, \alpha, \beta, \sigma_{int}, M_0 \vert \{ f_{i,j}, \sigma_{i,j}, z_i\}) 
+    \propto P(\{ f_{i,j}\} \vert \Omega, \alpha, \beta, M_0, \sigma_{int}, \{\sigma_{i,j}, z_i \} ) P(\Omega, \alpha, \beta, M_0, \sigma_{int}) 
+\ee
+To get the RHS, we need 
 \beqn
-P(\Omega, \alpha, \beta \vert \{ f_{i,j}, \sigma_{i,j}, z_i\}) 
-    &\propto& P(\{ f_{i,j}\} \vert \Omega, \alpha, \beta, \{\sigma_{i,j}, z_i \} ) P(\Omega, \alpha, \beta) 
-    \\ 
-    &=& \int  \Pi_{i} d\thetalctrue_{i} P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \}) P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta) 
+ P(\{f_{i,j}\} \vert \Omega, \alpha, \beta, \sigma_{int}, M_0, \{\sigma_{i,j},z_{i}\}) &=& \int  \prod_{i} d\thetalctrue_{i} P(\{f_{i,j} \}, \vert \{\sigma_{i,j}, \thetalctrue_i, z_i \}) \\
+  &\times& P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, \sigma_{int}, M_0, z_i) \nonumber\\ 
+ &=& \prod_i \int d\thetalctrue   P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})\\
+ %P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, z_i)
+ &\times& P({t_0}_i)  P({x_1}_i) P(c_i)  \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int})  \\
+ &=& \prod_i \left(\int d\thetalctrue P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})P(t_{0})P(x_1)P(m_B^{\star}) w(\thetalctrue_i) )\right) \nonumber
 \eeqn
-
-Where we have taken advantage of the fact that the fluxes $f_{i,j}$ of the supernovae only depend on the cosmological parameters $\Omega$ through the light 
-curve parameters $\{\thetalctrue_i\}.$
-
-Here, the set of parameters $\thetalctrue$ is defined by 
+where 
 \be
-    \thetalctrue = \{x_0, x_1, c, t_0, M \}
+w = \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int}) / P(m_B^{\star})
 \ee
-where we will assume that only $x_0$ is related to the cosmological parameters
-$\Omega$ through the Tripp ansatz:
+The first term is the posterior distribution of the light curves parameters 
+found separately in a previous stage. The integral in the last equation for each SN is then a sum over samples indexed by $j$ 
 \be
-\mu(\Omega, z ) = m_B^{\star} + \alpha x_1 - \beta c  - M 
+\sum_j \thetalctrue_j w(\thetalctrue_j) 
 \ee
-$m_B^{\star}$ is the magnitude of the light curve model at peak in the $B$ band, and is approximately only related to the SN $x_0,$ as the constriants chosen in
-the SALT model force contributions from the stretch term and color term to be zero at the central wavelength of the B band. We will take this relationship to 
-be 
-\be 
-m_B^{\star} = - 2.5 \log_{10}(x_0)
-\ee 
-and absorb the effective width of the filter into M.
-Here, $\mu(\Omega, z)$ is the distance modulus of the supernova calculated from the cosmological parameters and the redshift $z$ of the supernova. 
-
-The model here is that supernovae have an 'standardized candle
-Thus, values of $m_B^{\star},$ and consequently $x_0$ depend on the cosmological parameters, and also on the 
-In this model, we are assuming that the cosmological redshift of each supernova $z_i$ is measured exactly. The other set of observed quantities are counts in 
-each filter band for each supernova, denoted as $f_{i,j}$ the flux of the i'th 
-supernova in the j'th band in physical units. 
-As indicated in the diagrams, the flux of the i'th supernova in the j'th band is
-determined by the parameters $\{x_{0,i}^{true}, x_{1,i}^{true}, c_{i}^{true}, t_0^{true}, z_i\},$ and a certain amount o
 \end{document}
