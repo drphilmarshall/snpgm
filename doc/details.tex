@@ -69,22 +69,26 @@ Thus, the true properties of a particular supernova is completely specified by t
 \end{itemize}
 Combining these, we can obtain the probability distributions
 $ P(m_B^{\star}\vert \Omega, M_0, z, x_1, c)$ or equivalently $P(x_0 \vert \Omega, M_0, \sigma_{int}, x_1, c, z)$:
-\be
-P(m_B^{\star} \vert \Omega, M_0, z, x_1, c, \sigma_{int} ) = \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma_{int}^2) 
-\ee
+\beqn
+P(m_B^{\star} \vert \Omega, M_0, z, x_1, c, \sigma_{int} ) &=& 
+\int dM P(m_B^{\star} \vert M, \Omega, \alpha, \beta, x_1, c)P(M \vert M_0, \sigma_{int}) \\
+&=&
+P(\mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma_{int}^2) 
+\eeqn
 While, we are assuming that 
 \be
 P(x_1 , c \vert \Omega, M_0, z, \sigma_{int}) = P(x_1, c) = P(x_1) P(c) 
 \ee
 which we may relax in other models. In this model,  we have
 \beqn
-P(\thetalctrue \vert \Omega, \alpha, \beta, z, M_0, \sigma_{int}) &\equiv& \int d\sigma_{int} P(m_B^{\star}, x_1, c, t_0, \sigma_{int} \vert \Omega, z, \alpha, \beta)\\
-&=& \int d \sigma_{int}P(m_B^{\star} \vert x_1, c, t_0, \sigma_{int}, \Omega, z, \alpha, \beta)
-P(x_1, c, t_0, \sigma_{int} \vert \Omega, z, \alpha, \beta) \nonumber\\
-&=& \int d\sigma_{int} \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma^{int}) P(t_0 \vert z, \Omega) P(x_1) P(c)\nonumber  
+P(\thetalctrue \vert \Omega, \alpha, \beta, z, M_0, \sigma_{int}) &\equiv& P(m_B^{\star} \vert x_1, c, t_0, \Omega, z, \alpha, \beta, M_0, \sigma_{int}) \nonumber \\
+&\times& P(x_1, c, t_0, z, \Omega, \alpha, \beta, M_0, \sigma_{int})\\
+&=& P(m_B^{\star} \vert x_1, c, M_0, \sigma_{int}, \Omega, z, \alpha, \beta) \\
+&\times& P(x_1, c, t_0 ,\sigma_{int}) P(\Omega, z, \alpha, \beta) \nonumber\\
+&=& \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma^{int}) \\
+&\times&  P(x_1, c, t_0 ,\sigma_{int}) P(\Omega, z, \alpha, \beta)  
 \eeqn
 
-%mega) \\ &\times& P({x_1}_i) P(c_i) \int d\sigma_{int}
 \subsection{Posterior Samples of the Cosmology}
 The quantity we are interested in is the posterior distribution of the cosmological parameters $\Omega$ (where we will use $\Omega$ to denote the set of
 cosmological parameters, given the set of measurements $f_{i, j}$ , $\sigma_{i,j}$ which is 
