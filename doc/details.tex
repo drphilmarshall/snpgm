@@ -52,7 +52,7 @@ The SALT2 model has two parts:
     which is related mostly to $x_0,$ since the contribution from terms 
     involving $c$ and $x_1$ to this quantity is constrained to be exactly $0$
     in defining the SALT2 model at $p=0$ at the central wavelength of the 
-    BessellB band. In this very good approximation, $m_B^{\star} = -2.5 \log_{10}{(x_0)} -2.5 \log_{10}{(F_0)},$ where $F_0$ is a constant which can be evaluated for the SALT2 model. Thus, we will treat $x_0$ and $m_B^{\star}$ as equivalent quantities. Further, abusing our notation, we will redefine:
+    BessellB band. In this very good approximation, $m_B^{\star} = -2.5 \log_{10}{(x_0)} -2.5 \log_{10}{(F_0)},$ where $F_0$ is a constant which can be evaluated for the SALT2 model. Thus, we will treat $x_0$ and $m_B^{\star}$ as equivalent quantities (Fix to get correct ratio to make $F_0$ unitless) . Further, abusing our notation, we will redefine:
     \be
     m_b^{\star} = - 2.5 \log_{10}{(x_0)} , \qquad M \rightarrow M + 2.5\log_{10}{(F_0)}
     \ee
@@ -73,7 +73,7 @@ $ P(m_B^{\star}\vert \Omega, M_0, z, x_1, c)$ or equivalently $P(x_0 \vert \Omeg
 P(m_B^{\star} \vert \Omega, M_0, z, x_1, c, \sigma_{int} ) &=& 
 \int dM P(m_B^{\star} \vert M, \Omega, \alpha, \beta, x_1, c)P(M \vert M_0, \sigma_{int}) \\
 &=&
-P(\mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma_{int}^2) 
+\mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma_{int}^2) 
 \eeqn
 While, we are assuming that 
 \be
@@ -134,7 +134,4 @@ where $N_i$ is the number of samples of light curve model parameters of the
 $j'\rm{th}$ supernova.
 The first term is the posterior distribution of the light curves parameters 
 found separately in a previous stage. The integral in the last equation for each SN is then a sum over samples indexed by $j$ 
-\be
-\sum_j \thetalctrue_j w(\thetalctrue_j) 
-\ee
 \end{document}
