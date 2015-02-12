@@ -96,7 +96,13 @@ cosmological parameters, given the set of measurements $f_{i, j}$ , $\sigma_{i,j
 P(\Omega \vert \{f_{i,j}, \sigma_{i,j}, z_i,  \}) = 
         \int d\alpha d\beta d\sigma_{int}d M_0 P(\Omega, \alpha, \beta, M_0, \sigma_{int} \vert \{f_{i,j}, \sigma_{i,j}, z_i\})
 \ee
-To get this quantity, we use:
+We would like to do this integral by drawing samples from the space of cosmological parameters $\Omega, \alpha, \beta, M_0, \sigma_{int}$ with their frequencies
+according to above probability distribution. This requires evaluating
+$
+P(\Omega, \alpha, \beta, M_0, \sigma_{int} \vert \{ f_{i,j}, \sigma_{i,j}, z_i\}) 
+,$ at least, upto a constant of proportionality. We try to evaluate this using
+samples of individual light curve parameters inferred without any prior on 
+cosmology.
 \be
 P(\Omega, \alpha, \beta, \sigma_{int}, M_0 \vert \{ f_{i,j}, \sigma_{i,j}, z_i\}) 
     \propto P(\{ f_{i,j}\} \vert \Omega, \alpha, \beta, M_0, \sigma_{int}, \{\sigma_{i,j}, z_i \} ) P(\Omega, \alpha, \beta, M_0, \sigma_{int}) 
@@ -105,15 +111,27 @@ To get the RHS, we need
 \beqn
  P(\{f_{i,j}\} \vert \Omega, \alpha, \beta, \sigma_{int}, M_0, \{\sigma_{i,j},z_{i}\}) &=& \int  \prod_{i} d\thetalctrue_{i} P(\{f_{i,j} \}, \vert \{\sigma_{i,j}, \thetalctrue_i, z_i \}) \\
   &\times& P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, \sigma_{int}, M_0, z_i) \nonumber\\ 
- &=& \prod_i \int d\thetalctrue   P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})\\
+ &=& \prod_i \int d\thetalctrue_i  P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})\\
  %P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, z_i)
  &\times& P({t_0}_i)  P({x_1}_i) P(c_i)  \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int})  \\
- &=& \prod_i \left(\int d\thetalctrue P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})P(t_{0})P(x_1)P(m_B^{\star}) w(\thetalctrue_i) )\right) \nonumber
+ &=& \prod_i \left( \int d\thetalctrue_i \Phi_i (\thetalctrue_i) w_i (\thetalctrue_i)\right) \\
+ &=& \prod_i I_i
 \eeqn
-where 
-\be
-w = \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int}) / P(m_B^{\star})
+where  $\Phi_i(\thetalctrue_i)$ is proportional to the posterior distribution of the model parameters $\thetalctrue_i$ of i'th supernova  
+\be 
+\Phi_i(\thetalctrue_i) \equiv P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})P(t_{0})P(x_1)P(m_B^{\star})P(c)
 \ee
+and therefore $w_i(\thetalctrue_i)$ are given by  
+\be
+w_i = \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int}) / P(m_B^{\star})
+\ee
+Using the equal weight samples (indexed by $j$) of posteriors of light curve model parameters obtained from the individual light curves, we can do the individual integrals $I_i$ for each 
+supernova
+\be
+I_i \approx \frac{1}{N_i} \sum_j \thetalctrue_{i,j} w_i ( \thetalctrue_{i,j}) 
+\ee
+where $N_i$ is the number of samples of light curve model parameters of the 
+$j'\rm{th}$ supernova.
 The first term is the posterior distribution of the light curves parameters 
 found separately in a previous stage. The integral in the last equation for each SN is then a sum over samples indexed by $j$ 
 \be
