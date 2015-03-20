@@ -24,6 +24,7 @@ Active on this repo are:
 * Clare Saunders (Berkeley)
 * Phil Marshall (SLAC)
 * Kara Ponder (Pitt)
+* Rahul Biswas (UW)
 * Michael Wood-Vasey (Pitt)
 * Josh Meyers (Stanford)
 
