@@ -1,3 +1,5 @@
+% ============================================================================
+
 \documentclass{article}[10pt]
 
 %\input{preamble}
@@ -7,6 +9,27 @@
 \usepackage{graphicx}
 \newcommand{\thetalctrue}{\theta^{SN_{\rm{true}}}}
 
+% Margins one 1in all around:
+
+\setlength{\hoffset}{-1.0in}
+\setlength{\voffset}{-1.0in}
+\newlength{\innermargin}
+\setlength{\innermargin}{1in}
+\newlength{\outermargin}
+\setlength{\outermargin}{1in}
+\setlength{\oddsidemargin}{\innermargin}
+\setlength{\evensidemargin}{\outermargin}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-\innermargin}
+\addtolength{\textwidth}{-\outermargin}
+
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+\setlength{\topmargin}{1in}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{2.0\voffset}
+
+% ============================================================================
 
 \begin{document}
 
@@ -19,13 +42,8 @@ The objectives for this document are to
 \end{itemize}
 
 \section{Basic SALT2 Inference}
-This is the model discussed in the first hack.
-% and described in Figure~\ref{fig:model1}.
-%\begin{figure}[h]
-%\includegraphics{images/snpgm}
-%\caption{The basic hierarchical SALT2 model for ensembles of type Ia supernovae.}
-%\label{fig:model1}
-%\end{figure}
+
+This is the model we started discussing at ``Compute the Universe 2015.''
 
 \subsection{Observed Values}
 
@@ -106,82 +124,97 @@ At the top level of inference we have the following hyper-parameters, on top of 
 
 \subsection{Probabilistic Graphical Model}
 
-% Phil is here. Thinking maybe the next step should be to
-% make a PGM that corresponds to the above model, for discussion with Josh.
+Figure~\ref{fig:basic} shows probabilistic graphical models for the inference outlined above, for an individual supernova, and then an ensemble.
+\begin{figure*}[h]
+\begin{minipage}{\linewidth}
+    \begin{minipage}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{images/snpgm_pjm_single.png}
+    \end{minipage}
+    \begin{minipage}{0.48\linewidth}
+        \includegraphics[width=\linewidth]{images/snpgm_pjm.png}
+    \end{minipage}
+\end{minipage}
+\caption{The basic hierarchical SALT2 model for type Ia supernovae. Left: individual objects; right: ensemble.}
+\label{fig:basic}
+\end{figure*}
 
 
-
-\subsection{Rahul's Further Derivations}
-
-Combining these, we can obtain the probability distributions
-$ P(m_B^{\star}\vert \Omega, M_0, z, x_1, c)$ or equivalently $P(x_0 \vert \Omega, M_0, \sigma_{int}, x_1, c, z)$:
-\beqn
-P(m_B^{\star} \vert \Omega, M_0, z, x_1, c, \sigma_{int} ) &=&
-\int dM P(m_B^{\star} \vert M, \Omega, \alpha, \beta, x_1, c)P(M \vert M_0, \sigma_{int}) \\
-&=&
-\mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma_{int}^2)
-\eeqn
-
-While, we are assuming that
-\be
-P(x_1 , c \vert \Omega, M_0, z, \sigma_{int}) = P(x_1, c) = P(x_1) P(c)
-\ee
-which we may relax in other models. In this model,  we have
-\beqn
-P(\thetalctrue \vert \Omega, \alpha, \beta, z, M_0, \sigma_{int}) &\equiv& P(m_B^{\star} \vert x_1, c, t_0, \Omega, z, \alpha, \beta, M_0, \sigma_{int}) \nonumber \\
-&\times& P(x_1, c, t_0, z, \Omega, \alpha, \beta, M_0, \sigma_{int})\\
-&=& P(m_B^{\star} \vert x_1, c, M_0, \sigma_{int}, \Omega, z, \alpha, \beta) \\
-&\times& P(x_1, c, t_0 ,\sigma_{int}) P(\Omega, z, \alpha, \beta) \nonumber\\
-&=& \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma^{int}) \\
-&\times&  P(x_1, c, t_0 ,\sigma_{int}) P(\Omega, z, \alpha, \beta)
-\eeqn
-
-
-
-\subsection{Posterior Samples of the Cosmology}
-The quantity we are interested in is the posterior distribution of the cosmological parameters $\Omega$ (where we will use $\Omega$ to denote the set of
-cosmological parameters, given the set of measurements $f_{i, j}$ , $\sigma_{i,j}$ which is
-\be
-P(\Omega \vert \{f_{i,j}, \sigma_{i,j}, z_i,  \}) =
-        \int d\alpha d\beta d\sigma_{int}d M_0 P(\Omega, \alpha, \beta, M_0, \sigma_{int} \vert \{f_{i,j}, \sigma_{i,j}, z_i\})
-\ee
-We would like to do this integral by drawing samples from the space of cosmological parameters $\Omega, \alpha, \beta, M_0, \sigma_{int}$ with their frequencies
-according to above probability distribution. This requires evaluating
-$
-P(\Omega, \alpha, \beta, M_0, \sigma_{int} \vert \{ f_{i,j}, \sigma_{i,j}, z_i\})
-,$ at least, upto a constant of proportionality. We try to evaluate this using
-samples of individual light curve parameters inferred without any prior on
-cosmology.
-\be
-P(\Omega, \alpha, \beta, \sigma_{int}, M_0 \vert \{ f_{i,j}, \sigma_{i,j}, z_i\})
-    \propto P(\{ f_{i,j}\} \vert \Omega, \alpha, \beta, M_0, \sigma_{int}, \{\sigma_{i,j}, z_i \} ) P(\Omega, \alpha, \beta, M_0, \sigma_{int})
-\ee
-To get the RHS, we need
-\beqn
- P(\{f_{i,j}\} \vert \Omega, \alpha, \beta, \sigma_{int}, M_0, \{\sigma_{i,j},z_{i}\}) &=& \int  \prod_{i} d\thetalctrue_{i} P(\{f_{i,j} \}, \vert \{\sigma_{i,j}, \thetalctrue_i, z_i \}) \\
-  &\times& P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, \sigma_{int}, M_0, z_i) \nonumber\\
- &=& \prod_i \int d\thetalctrue_i  P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})\\
- %P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, z_i)
- &\times& P({t_0}_i)  P({x_1}_i) P(c_i)  \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int})  \\
- &=& \prod_i \left( \int d\thetalctrue_i \Phi_i (\thetalctrue_i) w_i (\thetalctrue_i)\right) \\
- &=& \prod_i I_i
-\eeqn
-where  $\Phi_i(\thetalctrue_i)$ is proportional to the posterior distribution of the model parameters $\thetalctrue_i$ of i'th supernova
-\be
-\Phi_i(\thetalctrue_i) \equiv P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})P(t_{0})P(x_1)P(m_B^{\star})P(c)
-\ee
-and therefore $w_i(\thetalctrue_i)$ are given by
-\be
-w_i = \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int}) / P(m_B^{\star})
-\ee
-Using the equal weight samples (indexed by $j$) of posteriors of light curve model parameters obtained from the individual light curves, we can do the individual integrals $I_i$ for each
-supernova
-\be
-I_i \approx \frac{1}{N_i} \sum_j \thetalctrue_{i,j} w_i ( \thetalctrue_{i,j})
-\ee
-where $N_i$ is the number of samples of light curve model parameters of the
-$j'\rm{th}$ supernova.
-The first term is the posterior distribution of the light curves parameters
-found separately in a previous stage. The integral in the last equation for each SN is then a sum over samples indexed by $j$
+% ============================================================================
+%
+%
+% \subsection{Rahul's Further Derivations}
+%
+% Combining these, we can obtain the probability distributions
+% $ P(m_B^{\star}\vert \Omega, M_0, z, x_1, c)$ or equivalently $P(x_0 \vert \Omega, M_0, \sigma_{int}, x_1, c, z)$:
+% \beqn
+% P(m_B^{\star} \vert \Omega, M_0, z, x_1, c, \sigma_{int} ) &=&
+% \int dM P(m_B^{\star} \vert M, \Omega, \alpha, \beta, x_1, c)P(M \vert M_0, \sigma_{int}) \\
+% &=&
+% \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma_{int}^2)
+% \eeqn
+%
+% While, we are assuming that
+% \be
+% P(x_1 , c \vert \Omega, M_0, z, \sigma_{int}) = P(x_1, c) = P(x_1) P(c)
+% \ee
+% which we may relax in other models. In this model,  we have
+% \beqn
+% P(\thetalctrue \vert \Omega, \alpha, \beta, z, M_0, \sigma_{int}) &\equiv& P(m_B^{\star} \vert x_1, c, t_0, \Omega, z, \alpha, \beta, M_0, \sigma_{int}) \nonumber \\
+% &\times& P(x_1, c, t_0, z, \Omega, \alpha, \beta, M_0, \sigma_{int})\\
+% &=& P(m_B^{\star} \vert x_1, c, M_0, \sigma_{int}, \Omega, z, \alpha, \beta) \\
+% &\times& P(x_1, c, t_0 ,\sigma_{int}) P(\Omega, z, \alpha, \beta) \nonumber\\
+% &=& \mathcal{N}(\mu(\Omega, z) - \alpha x_1 + \beta c + M_0, \sigma^{int}) \\
+% &\times&  P(x_1, c, t_0 ,\sigma_{int}) P(\Omega, z, \alpha, \beta)
+% \eeqn
+%
+%
+%
+% \subsection{Posterior Samples of the Cosmology}
+% The quantity we are interested in is the posterior distribution of the cosmological parameters $\Omega$ (where we will use $\Omega$ to denote the set of
+% cosmological parameters, given the set of measurements $f_{i, j}$ , $\sigma_{i,j}$ which is
+% \be
+% P(\Omega \vert \{f_{i,j}, \sigma_{i,j}, z_i,  \}) =
+%         \int d\alpha d\beta d\sigma_{int}d M_0 P(\Omega, \alpha, \beta, M_0, \sigma_{int} \vert \{f_{i,j}, \sigma_{i,j}, z_i\})
+% \ee
+% We would like to do this integral by drawing samples from the space of cosmological parameters $\Omega, \alpha, \beta, M_0, \sigma_{int}$ with their frequencies
+% according to above probability distribution. This requires evaluating
+% $
+% P(\Omega, \alpha, \beta, M_0, \sigma_{int} \vert \{ f_{i,j}, \sigma_{i,j}, z_i\})
+% ,$ at least, upto a constant of proportionality. We try to evaluate this using
+% samples of individual light curve parameters inferred without any prior on
+% cosmology.
+% \be
+% P(\Omega, \alpha, \beta, \sigma_{int}, M_0 \vert \{ f_{i,j}, \sigma_{i,j}, z_i\})
+%     \propto P(\{ f_{i,j}\} \vert \Omega, \alpha, \beta, M_0, \sigma_{int}, \{\sigma_{i,j}, z_i \} ) P(\Omega, \alpha, \beta, M_0, \sigma_{int})
+% \ee
+% To get the RHS, we need
+% \beqn
+%  P(\{f_{i,j}\} \vert \Omega, \alpha, \beta, \sigma_{int}, M_0, \{\sigma_{i,j},z_{i}\}) &=& \int  \prod_{i} d\thetalctrue_{i} P(\{f_{i,j} \}, \vert \{\sigma_{i,j}, \thetalctrue_i, z_i \}) \\
+%   &\times& P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, \sigma_{int}, M_0, z_i) \nonumber\\
+%  &=& \prod_i \int d\thetalctrue_i  P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})\\
+%  %P(\{\thetalctrue_i \}\vert \Omega, \alpha, \beta, z_i)
+%  &\times& P({t_0}_i)  P({x_1}_i) P(c_i)  \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int})  \\
+%  &=& \prod_i \left( \int d\thetalctrue_i \Phi_i (\thetalctrue_i) w_i (\thetalctrue_i)\right) \\
+%  &=& \prod_i I_i
+% \eeqn
+% where  $\Phi_i(\thetalctrue_i)$ is proportional to the posterior distribution of the model parameters $\thetalctrue_i$ of i'th supernova
+% \be
+% \Phi_i(\thetalctrue_i) \equiv P(\{f_{i,j} \}, \vert \{\sigma_{i,j} , z_i, \thetalctrue_i, z_i \})P(t_{0})P(x_1)P(m_B^{\star})P(c)
+% \ee
+% and therefore $w_i(\thetalctrue_i)$ are given by
+% \be
+% w_i = \mathcal{N}(\mu(\Omega, z) - \alpha {x_1}_i + \beta c_i + M_0, \sigma^{int}) / P(m_B^{\star})
+% \ee
+% Using the equal weight samples (indexed by $j$) of posteriors of light curve model parameters obtained from the individual light curves, we can do the individual integrals $I_i$ for each
+% supernova
+% \be
+% I_i \approx \frac{1}{N_i} \sum_j \thetalctrue_{i,j} w_i ( \thetalctrue_{i,j})
+% \ee
+% where $N_i$ is the number of samples of light curve model parameters of the
+% $j'\rm{th}$ supernova.
+% The first term is the posterior distribution of the light curves parameters
+% found separately in a previous stage. The integral in the last equation for each SN is then a sum over samples indexed by $j$
 
 \end{document}
+
+% ============================================================================
