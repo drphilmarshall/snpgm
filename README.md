@@ -1,22 +1,40 @@
-# snpgm
+# Supernova Cosmology PGMs
 
-Originally a
-[hack](https://hackpad.com/CtU2015-Hacks-and-Hackers-8rzvsLPoA89) for
+Starting life as a
+[hack](https://hackpad.com/CtU2015-Hacks-and-Hackers-8rzvsLPoA89) at
 the [Computing the Universe
-2015](http://bccp.berkeley.edu/dev/?page_id=2165) workshop. Now a
+2015](http://bccp.berkeley.edu/dev/?page_id=2165) workshop, this is now a
 repository for testing out ideas for forward-model/hierarchical
 supernova cosmology inference.
 
 ## About
 
-We're performing inference on this Probabalistic Graphical Model (PGM):
+We're performing inference on Probabalistic Graphical Models (PGMs) like this one:
 
-![PGM](snpgm.png)
+![PGM](https://github.com/drphilmarshall/snpgm/blob/master/doc/images/snpgm_pjm.png)
 
 It's specific to the SALT2 light curve model, in terms of the parameters that
-describe each light curve.
+describe each light curve. Read [this evolving PDF document](https://github.com/drphilmarshall/snpgm/blob/master/doc/details.pdf) for more details.
 
-**Dependencies:**
+## People, Credits, Licence etc
+
+Active on this repo are:
+
+* Kyle Barbary (Berkeley)
+* Clare Saunders (Berkeley)
+* Phil Marshall (SLAC)
+* Kara Ponder (Pitt)
+* Michael Wood-Vasey (Pitt)
+* Josh Meyers (Stanford)
+
+This is astrophysics research in progress: use at your own risk! When referring to this repo in your papers, please cite (Barbary, Ponder et al). The python code is available via the MIT licence: if you feel like playing around, please do introduce yourself by writing us an [issue](https://github.com/kbarbary/snpgm/issues/new).
+
+
+## Getting Started
+
+Hopefully the following will be enough to get you going on using the code.
+
+**Code Dependencies:**
 
 - astropy
 - sncosmo
