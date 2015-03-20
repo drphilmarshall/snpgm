@@ -91,8 +91,27 @@ We model the intrinsic dispersion of supernova properties as follows:
 \end{itemize}
 
 
+\subsection{Hyper-parameters}
+
+At the top level of inference we have the following hyper-parameters, on top of the ones that parametrize the conditional PDF for the SN properties:
+
+\begin{itemize}
+
+\item $\alpha$ and $\beta$. These are gradient-like parameters, for which a prior PDF something like $1/(1+\theta^2)$ might be appropriate.
+
+\item Cosmological parameters $\Omega$, with the usual priors.
+
+\end{itemize}
 
 
+\subsection{Probabilistic Graphical Model}
+
+% Phil is here. Thinking maybe the next step should be to
+% make a PGM that corresponds to the above model, for discussion with Josh.
+
+
+
+\subsection{Rahul's Further Derivations}
 
 Combining these, we can obtain the probability distributions
 $ P(m_B^{\star}\vert \Omega, M_0, z, x_1, c)$ or equivalently $P(x_0 \vert \Omega, M_0, \sigma_{int}, x_1, c, z)$:
@@ -164,4 +183,5 @@ where $N_i$ is the number of samples of light curve model parameters of the
 $j'\rm{th}$ supernova.
 The first term is the posterior distribution of the light curves parameters
 found separately in a previous stage. The integral in the last equation for each SN is then a sum over samples indexed by $j$
+
 \end{document}
