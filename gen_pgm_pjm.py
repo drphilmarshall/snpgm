@@ -20,7 +20,7 @@ pgm.add_node(Node("ci", r"$c_i$", 5, 3))
 
 # Per-SN parameters: second line in the plate
 pgm.add_node(Node("x0i", r"$x_{0,i}$", 3, 2))
-pgm.add_node(Node("t0", r"$t_0$", 5, 2))
+pgm.add_node(Node("t0", r"$t_{0,i}$", 5, 2))
 
 # Per-SN parameters: third line in the plate
 pgm.add_node(Node("zi", r"$z_i$", 2, 1, observed=True))
