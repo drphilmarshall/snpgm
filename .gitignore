@@ -60,3 +60,10 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# LaTeX
+*.aux
+*.dvi
+*.blg
+*.log
+*.pdf
